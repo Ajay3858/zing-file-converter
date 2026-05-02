@@ -5,7 +5,7 @@ from django.conf import settings
 from PIL import Image
 from pdf2image import convert_from_path
 from pdf2docx import Converter
-from docx2pdf import convert
+import subprocess
 
 import os
 
@@ -71,11 +71,7 @@ def pdf_to_jpg(request):
             with open(temp_pdf, "wb") as f:
                 for chunk in pdf_file.chunks():
                     f.write(chunk)
-
-            pages = convert_from_path(
-                temp_pdf,
-                poppler_path=r"C:\poppler-25.12.0\Library\bin"
-            )
+pages = convert_from_path(temp_pdf)
 
             filename = f"{name}.jpg"
             path = os.path.join(OUTPUT_DIR, filename)
@@ -146,7 +142,6 @@ def word_to_pdf(request):
 
         try:
             name = os.path.splitext(word_file.name)[0]
-
             word_path = os.path.join(OUTPUT_DIR, word_file.name)
             pdf_filename = f"{name}.pdf"
             pdf_path = os.path.join(OUTPUT_DIR, pdf_filename)
@@ -155,7 +150,13 @@ def word_to_pdf(request):
                 for chunk in word_file.chunks():
                     f.write(chunk)
 
-            convert(word_path, pdf_path)
+            subprocess.run([
+                "libreoffice",
+                "--headless",
+                "--convert-to", "pdf",
+                "--outdir", OUTPUT_DIR,
+                word_path
+            ], check=True)
 
             return render(request, "word_to_pdf.html", {
                 "message": "Converted Successfully ✅",
@@ -168,8 +169,6 @@ def word_to_pdf(request):
             })
 
     return render(request, "word_to_pdf.html")
-
-
 # DOWNLOAD
 def download(request):
     file = request.GET.get("file")
