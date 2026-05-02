@@ -71,7 +71,9 @@ def pdf_to_jpg(request):
             with open(temp_pdf, "wb") as f:
                 for chunk in pdf_file.chunks():
                     f.write(chunk)
-pages = convert_from_path(temp_pdf)
+
+            # ✅ CORRECT POSITION (inside try)
+            pages = convert_from_path(temp_pdf)
 
             filename = f"{name}.jpg"
             path = os.path.join(OUTPUT_DIR, filename)
@@ -89,7 +91,6 @@ pages = convert_from_path(temp_pdf)
             })
 
     return render(request, "pdf_to_jpg.html")
-
 
 # PDF TO WORD
 def pdf_to_word(request):
