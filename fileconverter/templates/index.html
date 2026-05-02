@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="hero">
+    <h1>Every tool you need to convert files</h1>
+    <p>Convert PDF, images and Word documents easily in one place.</p>
+</section>
+
+<div class="container">
+    <div class="tools-grid">
+
+        <a href="{% url 'jpg_to_pdf' %}" class="tool-card">
+            <div class="tool-icon">🖼️</div>
+            <h3>JPG to PDF</h3>
+            <p>Convert images into high-quality PDF files.</p>
+        </a>
+
+        <a href="{% url 'pdf_to_jpg' %}" class="tool-card">
+            <div class="tool-icon">📄</div>
+            <h3>PDF to JPG</h3>
+            <p>Extract PDF pages as JPG image files.</p>
+        </a>
+
+        <a href="{% url 'pdf_to_word' %}" class="tool-card">
+            <div class="tool-icon">📝</div>
+            <h3>PDF to Word</h3>
+            <p>Convert PDF documents into editable Word files.</p>
+        </a>
+
+        <a href="{% url 'word_to_pdf' %}" class="tool-card">
+            <div class="tool-icon">📘</div>
+            <h3>Word to PDF</h3>
+            <p>Convert Word documents into PDF format.</p>
+        </a>
+
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block body_class %}jpg-bg{% endblock %}
+
+{% block content %}
+
+<div class="upload-page">
+    <div class="upload-card">
+
+        <h2>🖼 JPG → PDF</h2>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <label class="drop-box" for="fileInput" id="dropBox">
+                <p class="upload-icon">📤</p>
+                <p><b>Drag & Drop JPG Here</b></p>
+                <p>or click to browse</p>
+            </label>
+
+            <input type="file" name="image" id="fileInput" accept="image/*" hidden required>
+
+            <button type="submit" class="btn">Convert</button>
+        </form>
+
+        {% if message %}
+            <p class="msg">{{ message }}</p>
+        {% endif %}
+
+        {% if file %}
+            <a href="{% url 'download' %}?file={{ file }}" class="btn">⬇ Download PDF</a>
+        {% endif %}
+
+        <a href="{% url 'index' %}" class="back">⬅ Back Home</a>
+
+    </div>
+</div>
+
+<script>
+const fileInput = document.getElementById("fileInput");
+const dropBox = document.getElementById("dropBox");
+
+fileInput.addEventListener("change", function () {
+    if (fileInput.files.length > 0) {
+        dropBox.innerHTML = `
+            <p class="upload-icon">✅</p>
+            <p><b>${fileInput.files[0].name}</b></p>
+            <p>File selected successfully</p>
+        `;
+    }
+});
+</script>
+
+{% endblock %}
