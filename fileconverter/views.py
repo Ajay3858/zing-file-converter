@@ -152,13 +152,12 @@ def word_to_pdf(request):
                     f.write(chunk)
 
             subprocess.run([
-                "libreoffice",
+                "soffice",
                 "--headless",
                 "--convert-to", "pdf",
                 "--outdir", OUTPUT_DIR,
                 word_path
             ], check=True)
-
             return render(request, "word_to_pdf.html", {
                 "message": "Converted Successfully ✅",
                 "file": pdf_filename
