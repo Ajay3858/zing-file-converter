@@ -11,6 +11,6 @@ urlpatterns = [
 
     path("compress-jpg/", views.compress_jpg, name="compress_jpg"),
     path("compress-pdf/", views.compress_pdf, name="compress_pdf"),
-
+path('favicon.ico', lambda request: HttpResponse(status=204)),
     path("download/", views.download, name="download"),
 ]
