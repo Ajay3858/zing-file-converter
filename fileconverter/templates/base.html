@@ -14,7 +14,12 @@
     box-sizing: border-box;
     font-family: "Segoe UI", sans-serif;
 }
-
+.logo-img {
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 6px;
+}
 body {
     min-height: 100vh;
     background: linear-gradient(135deg, #eef2ff, #f8fafc);
@@ -208,7 +213,194 @@ body.word-bg {
     color: green;
     font-weight: 700;
 }
+.upload-section {
+    min-height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
 
+.upload-card {
+    background: white;
+    max-width: 500px;
+    width: 100%;
+    padding: 35px;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+
+.upload-card h1 {
+    margin-bottom: 10px;
+    color: #222;
+}
+
+.upload-card p {
+    color: #666;
+    margin-bottom: 25px;
+}
+
+.upload-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.upload-form input {
+    padding: 12px;
+    border: 2px dashed #aaa;
+    border-radius: 10px;
+}
+
+.upload-form button,
+.download-btn {
+    background: #e5322d;
+    color: white;
+    border: none;
+    padding: 13px 20px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.upload-form button:hover,
+.download-btn:hover {
+    background: #c62824;
+}
+
+.message {
+    margin-top: 20px;
+    font-weight: bold;
+}
+.compress-wrapper {
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 20px;
+    background: linear-gradient(135deg, #f8f9ff, #ffffff);
+}
+
+.compress-card {
+    width: 100%;
+    max-width: 540px;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 24px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+}
+
+.compress-icon {
+    width: 78px;
+    height: 78px;
+    margin: 0 auto 20px;
+    border-radius: 22px;
+    background: #fff0ef;
+    color: #e5322d;
+    font-size: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.compress-card h1 {
+    font-size: 34px;
+    margin-bottom: 10px;
+    color: #1f2937;
+}
+
+.subtitle {
+    color: #6b7280;
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+
+.compress-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.file-box {
+    border: 2px dashed #e5322d;
+    background: #fff7f7;
+    padding: 28px;
+    border-radius: 18px;
+    cursor: pointer;
+    font-weight: 700;
+    color: #374151;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.file-box input {
+    display: none;
+}
+
+.file-icon {
+    font-size: 34px;
+}
+
+.form-label {
+    text-align: left;
+    font-weight: 700;
+    color: #374151;
+}
+
+.select-box {
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid #d1d5db;
+    font-size: 15px;
+}
+
+.primary-btn,
+.download-btn {
+    background: #e5322d;
+    color: white;
+    padding: 15px;
+    border-radius: 14px;
+    border: none;
+    font-weight: 800;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.primary-btn:hover,
+.download-btn:hover {
+    background: #c62824;
+}
+
+.status-message {
+    margin-top: 22px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.download-btn {
+    display: inline-block;
+    margin-top: 18px;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 24px;
+    color: #e5322d;
+    font-weight: 700;
+    text-decoration: none;
+}
+.back-link {
+    display: inline-block;
+    margin-top: 25px;
+    color: #e5322d;
+    text-decoration: none;
+    font-weight: bold;
+}
 @media (max-width: 900px) {
     .tools-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -251,7 +443,6 @@ body.word-bg {
         <a href="{% url 'word_to_pdf' %}">Word to PDF</a>
     </div>
 </div>
-
 {% block content %}{% endblock %}
 
 </body>

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="compress-wrapper">
+    <div class="compress-card">
+
+        <div class="compress-icon">🖼️</div>
+
+        <h1>Compress JPG</h1>
+        <p class="subtitle">
+            Reduce JPG image size quickly with custom compression quality.
+        </p>
+
+        <form method="POST" enctype="multipart/form-data" class="compress-form">
+            {% csrf_token %}
+
+            <label class="file-box">
+                <span class="file-icon">🖼️</span>
+                <span>Choose JPG Image</span>
+                <input type="file" name="image" accept=".jpg,.jpeg" required>
+            </label>
+
+            <label class="form-label">Image Quality</label>
+            <select name="quality" class="select-box" required>
+                <option value="80">Best Quality - Large Size</option>
+                <option value="50" selected>Balanced - Recommended</option>
+                <option value="25">Smallest Size - High Compression</option>
+            </select>
+
+            <button type="submit" class="primary-btn">
+                Compress JPG
+            </button>
+        </form>
+
+        {% if message %}
+            <p class="status-message">{{ message }}</p>
+        {% endif %}
+
+        {% if file %}
+            <a href="{% url 'download' %}?file={{ file }}" class="download-btn">
+                ⬇ Download Compressed JPG
+            </a>
+        {% endif %}
+
+        <a href="{% url 'index' %}" class="back-link">← Back to Home</a>
+
+    </div>
+</section>
+
+{% endblock %}

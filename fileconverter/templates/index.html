@@ -3,8 +3,8 @@
 {% block content %}
 
 <section class="hero">
-    <h1>Every tool you need to convert files</h1>
-    <p>Convert PDF, images and Word documents easily in one place.</p>
+    <h1>Every tool you need to convert and compress files</h1>
+    <p>Convert PDF, images, Word documents and reduce file size easily in one place.</p>
 </section>
 
 <div class="container">
@@ -33,7 +33,19 @@
             <h3>Word to PDF</h3>
             <p>Convert Word documents into PDF format.</p>
         </a>
-    
+
+        <a href="{% url 'compress_jpg' %}" class="tool-card">
+            <div class="tool-icon">🗜️</div>
+            <h3>Reduce JPG Size</h3>
+            <p>Compress JPG images while keeping good quality.</p>
+        </a>
+
+        <a href="{% url 'compress_pdf' %}" class="tool-card">
+            <div class="tool-icon">📉</div>
+            <h3>Reduce PDF Size</h3>
+            <p>Compress PDF files for easy sharing and uploading.</p>
+        </a>
+
     </div>
 </div>
 

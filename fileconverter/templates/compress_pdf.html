@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="compress-wrapper">
+    <div class="compress-card">
+
+        <div class="compress-icon">📉</div>
+
+        <h1>Compress PDF</h1>
+        <p class="subtitle">
+            Reduce your PDF file size while maintaining good document quality.
+        </p>
+
+        <form method="POST" enctype="multipart/form-data" class="compress-form">
+            {% csrf_token %}
+
+            <label class="file-box">
+                <span class="file-icon">📄</span>
+                <span>Choose PDF File</span>
+                <input type="file" name="pdf" accept=".pdf" required>
+            </label>
+
+            <label class="form-label">Compression Quality</label>
+            <select name="level" class="select-box" required>
+                <option value="/prepress">Best Quality - Low Compression</option>
+                <option value="/ebook" selected>Balanced - Recommended</option>
+                <option value="/screen">Smallest Size - High Compression</option>
+            </select>
+
+            <button type="submit" class="primary-btn">
+                Compress PDF
+            </button>
+        </form>
+
+        {% if message %}
+            <p class="status-message">{{ message }}</p>
+        {% endif %}
+
+        {% if file %}
+            <a href="{% url 'download' %}?file={{ file }}" class="download-btn">
+                ⬇ Download Compressed PDF
+            </a>
+        {% endif %}
+
+        <a href="{% url 'index' %}" class="back-link">← Back to Home</a>
+
+    </div>
+</section>
+
+{% endblock %}
