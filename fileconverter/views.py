@@ -25,16 +25,16 @@ def index(request):
     return render(request, "index.html")
 
 
-# JPG TO PDF
+# ================= JPG TO PDF =================
 def jpg_to_pdf(request):
     if request.method == "POST":
         image_file = request.FILES.get("image")
 
         if not image_file:
-            return render(request, "jpg_to_pdf.html", {"message": "Please upload an image ❌"})
+            return render(request, "jpg_to_pdf.html", {"message": "Upload image ❌"})
 
         if is_large(image_file):
-            return render(request, "jpg_to_pdf.html", {"message": "File too large. Max 5MB allowed ❌"})
+            return render(request, "jpg_to_pdf.html", {"message": "Max 5MB allowed ❌"})
 
         try:
             image = Image.open(image_file)
@@ -49,29 +49,26 @@ def jpg_to_pdf(request):
             image.save(path, "PDF")
 
             return render(request, "jpg_to_pdf.html", {
-                "message": "Converted Successfully ✅",
+                "message": "Success ✅",
                 "file": filename
             })
 
         except Exception as e:
-            return render(request, "jpg_to_pdf.html", {"message": f"Error: {e}"})
+            return render(request, "jpg_to_pdf.html", {"message": str(e)})
 
     return render(request, "jpg_to_pdf.html")
 
 
-# PDF TO JPG
+# ================= PDF TO JPG =================
 def pdf_to_jpg(request):
     if request.method == "POST":
         pdf_file = request.FILES.get("pdf")
 
         if not pdf_file:
-            return render(request, "pdf_to_jpg.html", {"message": "Please upload a PDF ❌"})
+            return render(request, "pdf_to_jpg.html", {"message": "Upload PDF ❌"})
 
         if is_large(pdf_file):
-            return render(request, "pdf_to_jpg.html", {"message": "File too large. Max 5MB allowed ❌"})
-
-        if not pdf_file.name.lower().endswith(".pdf"):
-            return render(request, "pdf_to_jpg.html", {"message": "Only PDF files allowed ❌"})
+            return render(request, "pdf_to_jpg.html", {"message": "Max 5MB allowed ❌"})
 
         try:
             name = os.path.splitext(pdf_file.name)[0]
@@ -89,29 +86,23 @@ def pdf_to_jpg(request):
             pages[0].save(path, "JPEG", quality=85)
 
             return render(request, "pdf_to_jpg.html", {
-                "message": "Converted Successfully ✅",
+                "message": "Success ✅",
                 "file": filename
             })
 
         except Exception as e:
-            return render(request, "pdf_to_jpg.html", {"message": f"Error: {e}"})
+            return render(request, "pdf_to_jpg.html", {"message": str(e)})
 
     return render(request, "pdf_to_jpg.html")
 
 
-# PDF TO WORD
+# ================= PDF TO WORD =================
 def pdf_to_word(request):
     if request.method == "POST":
         pdf_file = request.FILES.get("pdf")
 
         if not pdf_file:
-            return render(request, "pdf_to_word.html", {"message": "Please upload a PDF ❌"})
-
-        if is_large(pdf_file):
-            return render(request, "pdf_to_word.html", {"message": "File too large. Max 5MB allowed ❌"})
-
-        if not pdf_file.name.lower().endswith(".pdf"):
-            return render(request, "pdf_to_word.html", {"message": "Only PDF files allowed ❌"})
+            return render(request, "pdf_to_word.html", {"message": "Upload PDF ❌"})
 
         try:
             name = os.path.splitext(pdf_file.name)[0]
@@ -128,34 +119,27 @@ def pdf_to_word(request):
             cv.close()
 
             return render(request, "pdf_to_word.html", {
-                "message": "Converted Successfully ✅",
+                "message": "Success ✅",
                 "file": word_filename
             })
 
         except Exception as e:
-            return render(request, "pdf_to_word.html", {"message": f"Error: {e}"})
+            return render(request, "pdf_to_word.html", {"message": str(e)})
 
     return render(request, "pdf_to_word.html")
 
 
-# WORD TO PDF
+# ================= WORD TO PDF =================
 def word_to_pdf(request):
     if request.method == "POST":
         word_file = request.FILES.get("doc")
 
         if not word_file:
-            return render(request, "word_to_pdf.html", {"message": "Please upload a Word file ❌"})
-
-        if is_large(word_file):
-            return render(request, "word_to_pdf.html", {"message": "File too large. Max 5MB allowed ❌"})
-
-        if not word_file.name.lower().endswith((".doc", ".docx")):
-            return render(request, "word_to_pdf.html", {"message": "Only Word files allowed ❌"})
+            return render(request, "word_to_pdf.html", {"message": "Upload Word ❌"})
 
         try:
             name = os.path.splitext(word_file.name)[0]
             word_path = os.path.join(OUTPUT_DIR, word_file.name)
-            pdf_filename = f"{name}.pdf"
 
             with open(word_path, "wb") as f:
                 for chunk in word_file.chunks():
@@ -167,38 +151,27 @@ def word_to_pdf(request):
                 "--convert-to", "pdf",
                 "--outdir", OUTPUT_DIR,
                 word_path
-            ], check=True, timeout=25)
+            ], check=True, timeout=20)
 
             return render(request, "word_to_pdf.html", {
-                "message": "Converted Successfully ✅",
-                "file": pdf_filename
-            })
-
-        except subprocess.TimeoutExpired:
-            return render(request, "word_to_pdf.html", {
-                "message": "Conversion took too long. Try a smaller file ❌"
+                "message": "Success ✅",
+                "file": f"{name}.pdf"
             })
 
         except Exception as e:
-            return render(request, "word_to_pdf.html", {"message": f"Error: {e}"})
+            return render(request, "word_to_pdf.html", {"message": str(e)})
 
     return render(request, "word_to_pdf.html")
 
 
-# COMPRESS JPG
+# ================= COMPRESS JPG (FIXED) =================
 def compress_jpg(request):
     if request.method == "POST":
         image_file = request.FILES.get("image")
-        quality = int(request.POST.get("quality", 50))
+        quality = int(request.POST.get("quality", 35))
 
         if not image_file:
-            return render(request, "compress_jpg.html", {"message": "Upload JPG image ❌"})
-
-        if is_large(image_file):
-            return render(request, "compress_jpg.html", {"message": "File too large. Max 5MB allowed ❌"})
-
-        if not image_file.name.lower().endswith((".jpg", ".jpeg")):
-            return render(request, "compress_jpg.html", {"message": "Only JPG/JPEG files allowed ❌"})
+            return render(request, "compress_jpg.html", {"message": "Upload JPG ❌"})
 
         try:
             image = Image.open(image_file)
@@ -207,87 +180,94 @@ def compress_jpg(request):
                 image = image.convert("RGB")
 
             name = os.path.splitext(image_file.name)[0]
-            filename = f"{name}_compressed.jpg"
-            path = os.path.join(OUTPUT_DIR, filename)
+            final_path = os.path.join(OUTPUT_DIR, f"{name}_compressed.jpg")
+            temp_path = os.path.join(OUTPUT_DIR, f"{name}_temp.jpg")
 
-            image.save(path, "JPEG", optimize=True, quality=quality)
+            # Save compressed
+            # Resize image (IMPORTANT)
+            width, height = image.size
+            image = image.resize((int(width * 0.7), int(height * 0.7)))
+
+            # Save with strong compression
+            image.save(
+                temp_path,
+                "JPEG",
+                quality=quality,
+                optimize=True,
+                subsampling=2
+            )
+
+            # Compare sizes
+            if os.path.getsize(temp_path) < image_file.size:
+                os.rename(temp_path, final_path)
+                message = "Compressed Successfully ✅"
+            else:
+                with open(final_path, "wb") as f:
+                    for chunk in image_file.chunks():
+                        f.write(chunk)
+                os.remove(temp_path)
+                message = "Already optimized. Original returned ✅"
 
             return render(request, "compress_jpg.html", {
-                "message": "JPG Compressed Successfully ✅",
-                "file": filename
+                "message": message,
+                "file": f"{name}_compressed.jpg"
             })
 
         except Exception as e:
-            return render(request, "compress_jpg.html", {"message": f"Error: {e}"})
+            return render(request, "compress_jpg.html", {"message": str(e)})
 
     return render(request, "compress_jpg.html")
 
 
-# COMPRESS PDF
+# ================= COMPRESS PDF =================
 def compress_pdf(request):
     if request.method == "POST":
         pdf_file = request.FILES.get("pdf")
-        level = request.POST.get("level", "/ebook")
 
         if not pdf_file:
             return render(request, "compress_pdf.html", {"message": "Upload PDF ❌"})
 
-        if is_large(pdf_file):
-            return render(request, "compress_pdf.html", {"message": "File too large. Max 5MB allowed ❌"})
-
-        if not pdf_file.name.lower().endswith(".pdf"):
-            return render(request, "compress_pdf.html", {"message": "Only PDF files allowed ❌"})
-
         try:
             name = os.path.splitext(pdf_file.name)[0]
             input_path = os.path.join(OUTPUT_DIR, pdf_file.name)
-            output_filename = f"{name}_compressed.pdf"
-            output_path = os.path.join(OUTPUT_DIR, output_filename)
+            output_path = os.path.join(OUTPUT_DIR, f"{name}_compressed.pdf")
 
             with open(input_path, "wb") as f:
                 for chunk in pdf_file.chunks():
                     f.write(chunk)
 
-            gs_command = "gswin64c" if platform.system() == "Windows" else "gs"
+            gs = "gswin64c" if platform.system() == "Windows" else "gs"
 
             subprocess.run([
-                gs_command,
+                gs,
                 "-sDEVICE=pdfwrite",
                 "-dCompatibilityLevel=1.4",
-                f"-dPDFSETTINGS={level}",
+                "-dPDFSETTINGS=/screen",
                 "-dNOPAUSE",
                 "-dQUIET",
                 "-dBATCH",
                 f"-sOutputFile={output_path}",
                 input_path
-            ], check=True, timeout=25)
+            ], check=True)
 
             return render(request, "compress_pdf.html", {
-                "message": "PDF Compressed Successfully ✅",
-                "file": output_filename
-            })
-
-        except subprocess.TimeoutExpired:
-            return render(request, "compress_pdf.html", {
-                "message": "Compression took too long. Try a smaller PDF ❌"
+                "message": "Compressed Successfully ✅",
+                "file": f"{name}_compressed.pdf"
             })
 
         except Exception as e:
-            return render(request, "compress_pdf.html", {"message": f"Error: {e}"})
+            return render(request, "compress_pdf.html", {"message": str(e)})
 
     return render(request, "compress_pdf.html")
 
 
-# DOWNLOAD
+# ================= DOWNLOAD =================
 def download(request):
     file = request.GET.get("file")
-
-    if not file:
-        return HttpResponse("No file ❌")
 
     path = os.path.join(OUTPUT_DIR, file)
 
     if not os.path.exists(path):
         raise Http404("File not found")
 
-    return FileResponse(open(path, "rb"), as_attachment=True, filename=file)
+    return FileResponse(open(path, "rb"), as_attachment=True)

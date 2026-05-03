@@ -13,13 +13,19 @@ def compress_image(input_path, output_path, quality=50):
 
 def compress_pdf(input_path, output_path):
     subprocess.run([
-        "gs",
-        "-sDEVICE=pdfwrite",
-        "-dCompatibilityLevel=1.4",
-        "-dPDFSETTINGS=/ebook",
-        "-dNOPAUSE",
-        "-dQUIET",
-        "-dBATCH",
-        f"-sOutputFile={output_path}",
-        input_path
-    ], check=True)
+    gs_command,
+    "-sDEVICE=pdfwrite",
+    "-dCompatibilityLevel=1.4",
+    "-dPDFSETTINGS=/screen",
+    "-dDownsampleColorImages=true",
+    "-dColorImageResolution=72",
+    "-dDownsampleGrayImages=true",
+    "-dGrayImageResolution=72",
+    "-dDownsampleMonoImages=true",
+    "-dMonoImageResolution=72",
+    "-dNOPAUSE",
+    "-dQUIET",
+    "-dBATCH",
+    f"-sOutputFile={output_path}",
+    input_path
+], check=True, timeout=25)
